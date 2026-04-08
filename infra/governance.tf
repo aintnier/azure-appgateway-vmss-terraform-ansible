@@ -59,7 +59,7 @@ resource "azurerm_resource_group_policy_assignment" "allowed_vm_skus" {
   policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/cccc23c7-8427-4f53-ad12-b6a63eb452b3"
   display_name         = "Allowed VM SKUs"
   description          = "Restrict VM sizes to cost-governed SKUs: Standard_B1s, Standard_B2s, Standard_D2s_v3"
-  enforcement_mode     = "Default"
+  enforce              = true
 
   parameters = jsonencode({
     listOfAllowedSKUs = {
@@ -79,7 +79,7 @@ resource "azurerm_resource_group_policy_assignment" "allowed_locations" {
   policy_definition_id = "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
   display_name         = "Allowed Locations"
   description          = "Restrict resource deployment to westeurope only"
-  enforcement_mode     = "Default"
+  enforce              = true
 
   parameters = jsonencode({
     listOfAllowedLocations = {
@@ -122,7 +122,7 @@ resource "azurerm_monitor_diagnostic_setting" "appgw" {
     category = "ApplicationGatewayPerformanceLog"
   }
 
-  metric {
+  enabled_metric {
     category = "AllMetrics"
   }
 }
@@ -134,6 +134,7 @@ resource "azurerm_monitor_diagnostic_setting" "appgw" {
 resource "azurerm_monitor_activity_log_alert" "autoscale" {
   name                = "alert-autoscale-${local.name_suffix}"
   resource_group_name = azurerm_resource_group.this.name
+  location            = "Global"
   scopes              = [azurerm_resource_group.this.id]
   description         = "Alert when VMSS Frontend autoscale triggers a scale-out event"
 
