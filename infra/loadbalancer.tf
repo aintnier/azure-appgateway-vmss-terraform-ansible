@@ -54,7 +54,7 @@ resource "azurerm_lb_rule" "http" {
   frontend_ip_configuration_name = "frontend-ip-internal"
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.backend.id]
   probe_id                       = azurerm_lb_probe.backend.id
-  enable_floating_ip             = false
+  floating_ip_enabled            = false
   idle_timeout_in_minutes        = 4
   load_distribution              = "Default"
 }

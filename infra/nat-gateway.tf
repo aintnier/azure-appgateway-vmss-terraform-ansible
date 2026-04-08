@@ -8,7 +8,7 @@ resource "azurerm_public_ip" "nat" {
   resource_group_name = azurerm_resource_group.this.name
   allocation_method   = "Static"
   sku                 = "Standard"
-  tags                = local.tags
+  tags                = local.common_tags
 }
 
 resource "azurerm_nat_gateway" "this" {
@@ -16,7 +16,7 @@ resource "azurerm_nat_gateway" "this" {
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
   sku_name            = "Standard"
-  tags                = local.tags
+  tags                = local.common_tags
 }
 
 resource "azurerm_nat_gateway_public_ip_association" "this" {
