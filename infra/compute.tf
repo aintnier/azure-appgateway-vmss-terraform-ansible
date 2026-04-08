@@ -16,7 +16,6 @@ resource "azurerm_linux_virtual_machine_scale_set" "frontend" {
   admin_username      = var.admin_username
   overprovision       = false
   upgrade_mode        = "Automatic"
-  health_probe_id     = tolist(azurerm_application_gateway.this.probe)[0].id
   custom_data = base64encode(
     templatefile("${path.module}/scripts/cloud-init.sh.tpl", {
       server_role   = "frontend"
