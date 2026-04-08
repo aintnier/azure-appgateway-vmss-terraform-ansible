@@ -1,0 +1,90 @@
+---
+# ============================================================================
+# Ansible Playbook - Local Pull Configuration for VMSS Instances
+# Executed at boot via cloud-init on each VMSS node.
+# The 'server_role' variable (frontend|backend) and 'backend_lb_ip'
+# are passed via --extra-vars from the cloud-init script.
+# ============================================================================
+
+- name: Configure web server (Local Pull)
+  hosts: localhost
+  connection: local
+  become: true
+
+  vars:
+    server_role: "frontend"
+    backend_lb_ip: "10.0.3.10"
+
+  tasks:
+    # --- Install Nginx ---
+    - name: Install Nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: true
+
+    # --- Remove default Nginx site ---
+    - name: Remove default Nginx site symlink
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    # --- Deploy index.html (both tiers show hostname) ---
+    - name: Deploy root index page
+      ansible.builtin.template:
+        src: templates/index.html.j2
+        dest: /var/www/html/index.html
+        mode: "0644"
+
+    # --- Backend-only: create /var/www/api and deploy API page ---
+    - name: Create API directory
+      ansible.builtin.file:
+        path: /var/www/api
+        state: directory
+        mode: "0755"
+      when: server_role == "backend"
+
+    - name: Deploy API page
+      ansible.builtin.template:
+        src: templates/api.html.j2
+        dest: /var/www/api/index.html
+        mode: "0644"
+      when: server_role == "backend"
+
+    # --- Deploy Nginx configuration (role-dependent) ---
+    - name: Deploy Nginx config (frontend - reverse proxy)
+      ansible.builtin.template:
+        src: templates/nginx-frontend.conf.j2
+        dest: /etc/nginx/sites-available/default
+        mode: "0644"
+      when: server_role == "frontend"
+      notify: Restart Nginx
+
+    - name: Deploy Nginx config (backend - API server)
+      ansible.builtin.template:
+        src: templates/nginx-backend.conf.j2
+        dest: /etc/nginx/sites-available/default
+        mode: "0644"
+      when: server_role == "backend"
+      notify: Restart Nginx
+
+    # --- Re-enable default site symlink ---
+    - name: Enable Nginx site
+      ansible.builtin.file:
+        src: /etc/nginx/sites-available/default
+        dest: /etc/nginx/sites-enabled/default
+        state: link
+      notify: Restart Nginx
+
+    # --- Ensure Nginx is started and enabled ---
+    - name: Enable and start Nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: started
+        enabled: true
+
+  handlers:
+    - name: Restart Nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: restarted

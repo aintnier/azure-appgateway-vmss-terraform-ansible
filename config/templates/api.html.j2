@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Backend API Tier</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #0a0a23; color: #eaeaea; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+    .card { background: #1b1b3a; border: 1px solid #3a3a5c; border-radius: 12px; padding: 2rem 3rem; text-align: center; box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
+    h1 { color: #43b581; margin-bottom: 0.5rem; }
+    .hostname { font-size: 1.4rem; color: #faa61a; }
+    .tier { color: #8a8a8a; font-size: 0.9rem; margin-top: 1rem; }
+    pre { background: #0d0d1a; padding: 1rem; border-radius: 8px; text-align: left; color: #53d8fb; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Backend API Tier</h1>
+    <p class="hostname">Hostname: <strong>{{ ansible_hostname }}</strong></p>
+    <p class="tier">Layer: VMSS Backend &mdash; API endpoint</p>
+    <pre>{
+  "status": "ok",
+  "tier": "backend",
+  "hostname": "{{ ansible_hostname }}",
+  "path": "/api"
+}</pre>
+  </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+server {
+    listen 80 default_server;
+    server_name _;
+
+    # --- Root: hostname page for internal LB health verification ---
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+
+    # --- /api: serve API response page ---
+    location /api {
+        alias /var/www/api;
+        index index.html;
+    }
+
+    # --- Health probe endpoint for Standard Load Balancer ---
+    location /health {
+        access_log off;
+        return 200 'healthy';
+        add_header Content-Type text/plain;
+    }
+}

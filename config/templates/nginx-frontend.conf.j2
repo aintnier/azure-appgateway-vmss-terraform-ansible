@@ -1,0 +1,28 @@
+server {
+    listen 80 default_server;
+    server_name _;
+
+    # --- Root: serve frontend HTML page locally ---
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+
+    # --- /api: reverse-proxy to Internal Load Balancer (Backend tier) ---
+    location /api {
+        proxy_pass http://{{ backend_lb_ip }}/api;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 10s;
+    }
+
+    # --- Health probe endpoint for Application Gateway ---
+    location /health {
+        access_log off;
+        return 200 'healthy';
+        add_header Content-Type text/plain;
+    }
+}
