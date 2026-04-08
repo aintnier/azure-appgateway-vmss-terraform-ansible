@@ -105,5 +105,9 @@ resource "azurerm_application_gateway" "this" {
   depends_on = [
     azurerm_role_assignment.appgw_kv_secrets,
     azurerm_subnet_network_security_group_association.appgw,
+    azurerm_network_security_rule.appgw_allow_gateway_manager,
+    azurerm_network_security_rule.appgw_allow_azure_lb,
+    azurerm_network_security_rule.appgw_allow_https_inbound,
+    azurerm_network_security_rule.appgw_allow_http_inbound,
   ]
 }
