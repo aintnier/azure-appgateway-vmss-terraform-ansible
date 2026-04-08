@@ -251,40 +251,41 @@ Authentication uses **OIDC Federated Identity** on all pipelines. No static clie
 ## Repository Structure
 
 ```
-.
-├── infra/                     # Terraform configuration (flat, no modules)
-│   ├── providers.tf           # Terraform & provider version pinning
-│   ├── backend.tf             # Remote state backend (Azure Storage)
-│   ├── variables.tf           # All variables + locals
-│   ├── networking.tf          # RG, VNet, Subnets, NSGs, Public IPs
-│   ├── keyvault.tf            # Key Vault, TLS cert, SSH key, managed identity
-│   ├── appgateway.tf          # Application Gateway WAF v2
-│   ├── loadbalancer.tf        # Internal Standard Load Balancer
-│   ├── compute.tf             # Frontend & Backend VMSS + Autoscale
-│   ├── bastion.tf             # Azure Bastion
-│   ├── governance.tf          # Budget, Policies, Action Groups, Log Analytics
-│   ├── network-watcher.tf     # Network Watcher
-│   ├── loadtesting.tf         # Azure Load Testing resource
-│   ├── outputs.tf             # All output values
-│   └── scripts/
-│       └── cloud-init.sh.tpl  # Cloud-init template (Ansible local-pull)
-├── config/                    # Ansible configuration (source of truth)
-│   ├── ansible.cfg            # Local-pull optimised settings
-│   ├── playbook.yml           # Main playbook (frontend/backend roles)
-│   └── templates/
-│       ├── index.html.j2      # Frontend HTML (hostname display)
-│       ├── api.html.j2        # Backend API HTML/JSON
-│       ├── nginx-frontend.conf.j2  # Nginx reverse-proxy config
-│       └── nginx-backend.conf.j2   # Nginx API server config
-├── pipelines/                 # Azure DevOps CI/CD (OIDC)
-│   ├── ci-pipeline.yml        # fmt-check + validate (PR/push)
-│   ├── deploy-pipeline.yml    # plan -> approval -> apply
-│   └── destroy-pipeline.yml   # plan -destroy -> approval -> destroy
-├── tests/
-│   └── loadtest.jmx           # JMeter test plan (500 req/s, 10 min)
-├── docs/
-│   └── imgs/                  # Validation screenshots
-└── README.md
+├── 📁 config                                                    # Ansible configuration
+│   ├── 📁 templates
+│   │   ├── 📄 api.html.j2                                       # Backend API HTML/JSON template
+│   │   ├── 📄 index.html.j2                                     # Frontend HTML template
+│   │   ├── 📄 nginx-backend.conf.j2                             # Nginx API server config
+│   │   └── 📄 nginx-frontend.conf.j2                            # Nginx reverse-proxy config
+│   ├── 📄 ansible.cfg                                           # Local-pull optimised settings
+│   └── ⚙️ playbook.yml                                          # Main playbook (frontend/backend roles)
+├── 📁 docs
+│   └── 📁 imgs                                                  # Validation screenshots
+├── 📁 infra                                                     # Terraform configuration
+│   ├── 📁 scripts
+│   │   └── 📄 cloud-init.sh.tpl                                 # Cloud-init template (Ansible local-pull)
+│   ├── 📄 appgateway.tf                                         # Application Gateway WAF v2
+│   ├── 📄 backend.tf                                            # Backend Standard Load Balancer
+│   ├── 📄 bastion.tf                                            # Azure Bastion
+│   ├── 📄 compute.tf                                            # Frontend & Backend VMSS + Autoscale
+│   ├── 📄 governance.tf                                         # Budget, Policies, Action Groups, Log Analytics
+│   ├── 📄 keyvault.tf                                           # Key Vault, TLS cert, SSH key, managed identity
+│   ├── 📄 loadbalancer.tf                                       # Internal Standard Load Balancer
+│   ├── 📄 loadtesting.tf                                        # Azure Load Testing resource
+│   ├── 📄 network-watcher.tf                                    # Network Watcher
+│   ├── 📄 networking.tf                                         # RG, VNet, Subnets, NSGs, Public IPs
+│   ├── 📄 outputs.tf                                            # All output values
+│   ├── 📄 providers.tf                                          # Terraform & provider version pinning
+│   └── 📄 variables.tf                                          # All variables + locals
+├── 📁 pipelines                                                 # Azure DevOps CI/CD (OIDC)
+│   ├── ⚙️ ci-pipeline.yml                                       # fmt-check + validate (PR/push)
+│   ├── ⚙️ deploy-pipeline.yml                                   # plan -> approval -> apply
+│   └── ⚙️ destroy-pipeline.yml                                  # plan -destroy -> approval -> destroy
+├── 📁 tests
+│   └── 📄 loadtest.jmx                                          # JMeter test plan (500 req/s, 10 min)
+├── ⚙️ .gitignore
+├── 📄 LICENSE
+└── 📝 README.md
 ```
 
 ---
