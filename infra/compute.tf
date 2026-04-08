@@ -8,15 +8,15 @@
 # ---
 
 resource "azurerm_linux_virtual_machine_scale_set" "frontend" {
-  name                            = "vmss-frontend-${local.name_suffix}"
-  resource_group_name             = azurerm_resource_group.this.name
-  location                        = azurerm_resource_group.this.location
-  sku                             = var.vmss_frontend_sku
-  instances                       = var.vmss_frontend_default
-  admin_username                  = var.admin_username
-  overprovision                   = false
-  upgrade_mode                    = "Automatic"
-  health_probe_id                 = azurerm_application_gateway.this.probe[0].id
+  name                = "vmss-frontend-${local.name_suffix}"
+  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.this.location
+  sku                 = var.vmss_frontend_sku
+  instances           = var.vmss_frontend_default
+  admin_username      = var.admin_username
+  overprovision       = false
+  upgrade_mode        = "Automatic"
+  health_probe_id     = azurerm_application_gateway.this.probe[0].id
   custom_data = base64encode(
     templatefile("${path.module}/scripts/cloud-init.sh.tpl", {
       server_role   = "frontend"
@@ -143,14 +143,14 @@ resource "azurerm_monitor_autoscale_setting" "frontend" {
 # ---
 
 resource "azurerm_linux_virtual_machine_scale_set" "backend" {
-  name                            = "vmss-backend-${local.name_suffix}"
-  resource_group_name             = azurerm_resource_group.this.name
-  location                        = azurerm_resource_group.this.location
-  sku                             = var.vmss_backend_sku
-  instances                       = var.vmss_backend_instances
-  admin_username                  = var.admin_username
-  overprovision                   = false
-  upgrade_mode                    = "Automatic"
+  name                = "vmss-backend-${local.name_suffix}"
+  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.this.location
+  sku                 = var.vmss_backend_sku
+  instances           = var.vmss_backend_instances
+  admin_username      = var.admin_username
+  overprovision       = false
+  upgrade_mode        = "Automatic"
 
   custom_data = base64encode(
     templatefile("${path.module}/scripts/cloud-init.sh.tpl", {
