@@ -66,10 +66,11 @@ resource "azurerm_application_gateway" "this" {
     name                                      = "health-probe"
     protocol                                  = "Http"
     path                                      = "/health"
+    host                                      = "127.0.0.1"
     interval                                  = 30
     timeout                                   = 30
     unhealthy_threshold                       = 3
-    pick_host_name_from_backend_http_settings = true
+    pick_host_name_from_backend_http_settings = false
   }
 
   # --- HTTPS Listener ---
