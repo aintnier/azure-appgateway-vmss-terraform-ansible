@@ -79,13 +79,13 @@ variable "subnet_cidrs" {
 variable "vmss_frontend_sku" {
   description = "VM SKU for the Frontend VMSS"
   type        = string
-  default     = "Standard_B2s"
+  default     = "Standard_B2s_v2"
 }
 
 variable "vmss_backend_sku" {
   description = "VM SKU for the Backend VMSS"
   type        = string
-  default     = "Standard_B2s"
+  default     = "Standard_B2s_v2"
 }
 
 variable "vmss_frontend_min" {

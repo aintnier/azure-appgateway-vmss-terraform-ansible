@@ -100,6 +100,9 @@ stages:
                     addSpnToEnvironment: true
                     scriptLocation: "inlineScript"
                     inlineScript: |
+                      # Register required resource provider
+                      az provider register --namespace Microsoft.LoadTestService --wait
+
                       export ARM_USE_OIDC=true
                       export ARM_OIDC_TOKEN=$idToken
                       export ARM_CLIENT_ID=$servicePrincipalId

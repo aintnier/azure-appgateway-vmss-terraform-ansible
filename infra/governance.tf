@@ -63,7 +63,7 @@ resource "azurerm_resource_group_policy_assignment" "allowed_vm_skus" {
 
   parameters = jsonencode({
     listOfAllowedSKUs = {
-      value = ["Standard_B1s", "Standard_B2s", "Standard_D2s_v3"]
+      value = ["Standard_B1s", "Standard_B2s_v2", "Standard_D2s_v3"]
     }
   })
 }

@@ -1,6 +1,6 @@
-[![Terraform CI](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status/ci-pipeline?branchName=main&label=Terraform%20CI)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build?definitionId=ci-pipeline)
-[![Deploy](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status/deploy-pipeline?branchName=main&label=Deploy)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build?definitionId=deploy-pipeline)
-[![Destroy](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status/destroy-pipeline?branchName=main&label=Destroy)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build?definitionId=destroy-pipeline)
+[![Terraform CI](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status/ci-pipeline?branchName=main&label=Terraform%20CI)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build?definitionId=1)
+[![Deploy](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status/deploy-pipeline?branchName=main&label=Deploy)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build?definitionId=2)
+[![Destroy](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status/destroy-pipeline?branchName=main&label=Destroy)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build?definitionId=3)
 
 [![Azure](https://img.shields.io/badge/Azure-Cloud-0078D4?logo=microsoft-azure)](https://azure.microsoft.com/)
 [![Terraform](https://img.shields.io/badge/Terraform-1.14.8-7B42BC?logo=terraform)](https://www.terraform.io/)
