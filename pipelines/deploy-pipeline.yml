@@ -1,0 +1,109 @@
+# ============================================================================
+# Deploy Pipeline - Terraform Plan -> Manual Approval -> Apply
+# ============================================================================
+
+trigger: none
+
+variables:
+  - name: serviceConnection
+    value: "azure-oidc-connection"
+  - name: workingDirectory
+    value: "$(System.DefaultWorkingDirectory)/infra"
+  - name: terraformVersion
+    value: "1.14.8"
+  - name: environmentName
+    value: "dev"
+  - group: terraform-vars
+
+pool:
+  vmImage: "ubuntu-latest"
+
+stages:
+  # --- Stage 1: Plan ---
+  - stage: Plan
+    displayName: "Terraform Plan"
+    jobs:
+      - job: TerraformPlan
+        displayName: "Generate Execution Plan"
+        steps:
+          - task: TerraformInstaller@1
+            displayName: "Install Terraform $(terraformVersion)"
+            inputs:
+              terraformVersion: "$(terraformVersion)"
+
+          - task: AzureCLI@2
+            displayName: "Terraform Init"
+            inputs:
+              azureSubscription: "$(serviceConnection)"
+              scriptType: "bash"
+              addSpnToEnvironment: true
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                export ARM_USE_OIDC=true
+                export ARM_OIDC_TOKEN=$idToken
+                export ARM_CLIENT_ID=$servicePrincipalId
+                export ARM_TENANT_ID=$tenantId
+                export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+                terraform -chdir=$(workingDirectory) init
+
+          - task: AzureCLI@2
+            displayName: "Terraform Plan"
+            inputs:
+              azureSubscription: "$(serviceConnection)"
+              scriptType: "bash"
+              addSpnToEnvironment: true
+              scriptLocation: "inlineScript"
+              inlineScript: |
+                export ARM_USE_OIDC=true
+                export ARM_OIDC_TOKEN=$idToken
+                export ARM_CLIENT_ID=$servicePrincipalId
+                export ARM_TENANT_ID=$tenantId
+                export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+                terraform -chdir=$(workingDirectory) plan -out=tfplan
+
+          - task: PublishPipelineArtifact@1
+            displayName: "Publish Plan Artifact"
+            inputs:
+              targetPath: "$(workingDirectory)/tfplan"
+              artifactName: "tfplan"
+
+  # --- Stage 2: Apply (with manual approval) ---
+  - stage: Apply
+    displayName: "Terraform Apply"
+    dependsOn: Plan
+    jobs:
+      - deployment: TerraformApply
+        displayName: "Apply Infrastructure"
+        environment: "$(environmentName)"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - task: TerraformInstaller@1
+                  displayName: "Install Terraform $(terraformVersion)"
+                  inputs:
+                    terraformVersion: "$(terraformVersion)"
+
+                - task: DownloadPipelineArtifact@2
+                  displayName: "Download Plan Artifact"
+                  inputs:
+                    artifactName: "tfplan"
+                    targetPath: "$(workingDirectory)"
+
+                - task: AzureCLI@2
+                  displayName: "Terraform Init & Apply"
+                  inputs:
+                    azureSubscription: "$(serviceConnection)"
+                    scriptType: "bash"
+                    addSpnToEnvironment: true
+                    scriptLocation: "inlineScript"
+                    inlineScript: |
+                      export ARM_USE_OIDC=true
+                      export ARM_OIDC_TOKEN=$idToken
+                      export ARM_CLIENT_ID=$servicePrincipalId
+                      export ARM_TENANT_ID=$tenantId
+                      export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+                      terraform -chdir=$(workingDirectory) init
+                      terraform -chdir=$(workingDirectory) apply -auto-approve tfplan
