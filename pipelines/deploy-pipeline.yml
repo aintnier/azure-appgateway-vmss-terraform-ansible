@@ -16,7 +16,7 @@ variables:
   - group: terraform-vars
 
 pool:
-  vmImage: "ubuntu-latest"
+  name: "Default"
 
 stages:
   # --- Stage 1: Plan ---
