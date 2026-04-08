@@ -190,9 +190,17 @@ Once the App Registration is in place, the Azure DevOps project was configured t
    ![Azure DevOps Service Connection](docs/imgs/setup/06-azure-devops-service-connection-oidc.png)
    _Fig. 7: The OIDC Service Connection fully established and validated._
 
-### Continuous Integration (CI)
+### Continuous Integration (CI) & Self-Hosted Linux Agent
 
 The Azure DevOps CI pipeline ([`ci-pipeline.yml`](pipelines/ci-pipeline.yml)) runs `terraform fmt -check` and `terraform validate` on every push and pull request to `main` - without contacting Azure state.
+
+To bypass the requirement for a Microsoft-hosted parallelism grant (often restricted for new organizations), this project utilizes a **Self-Hosted Linux Agent**. The agent runs persistently on the local machine, and all YAML pipelines are explicitly configured to execute jobs via this pool (`pool: name: "Default"`). This ensures immediate CI/CD execution using local compute resources.
+
+![Pipeline Registration](docs/imgs/setup/09-azure-devops-pipeline-registration.png)
+_Fig. 8: The pipeline registration process connecting the GitHub YAML definition to Azure DevOps._
+<br>
+![CI Pipeline Success](docs/imgs/setup/10-azure-devops-ci-success.png)
+_Fig. 9: Successful execution of the CI pipeline passing validation. As seen in the split-screen view, the local Linux terminal (acting as the Self-Hosted agent) intercepts and processes the pending ADO job in real-time._
 
 ---
 
