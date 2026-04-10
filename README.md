@@ -1,8 +1,10 @@
 # Azure AppGateway & VMSS - Terraform Lab
 
-[![Terraform CI](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status/ci-pipeline?branchName=main&label=Terraform%20CI)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status%2Faintnier.azure-appgateway-vmss-terraform-ansible?branchName=main)
-[![Deploy](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status/deploy-pipeline?branchName=main&label=Deploy)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status%2Faintnier.azure-appgateway-vmss-terraform-ansible?branchName=main)
-[![Destroy](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status/destroy-pipeline?branchName=main&label=Destroy)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status%2Faintnier.azure-appgateway-vmss-terraform-ansible?branchName=main)
+<!-- prettier-ignore-start -->
+[![Terraform CI ](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status%2Faintnier.azure-appgateway-vmss-terraform-ansible?branchName=main)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build/latest?definitionId=1&branchName=main)
+[![Deploy](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status%2Faintnier.azure-appgateway-vmss-terraform-ansible%20(2)?branchName=main)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build/latest?definitionId=2&branchName=main)
+[![Destroy](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status%2Faintnier.azure-appgateway-vmss-terraform-ansible%20(3)?branchName=main)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build/latest?definitionId=3&branchName=main)
+<!-- prettier-ignore-end -->
 
 [![Azure](https://img.shields.io/badge/Azure-Cloud-0078D4?logo=microsoft-azure)](https://azure.microsoft.com/)
 [![Terraform](https://img.shields.io/badge/Terraform-1.14.8-7B42BC?logo=terraform)](https://www.terraform.io/)
@@ -103,6 +105,15 @@ az ad sp create --id <APP_ID>
 az role assignment create --assignee <SP_ID> --role Contributor --scope /subscriptions/<SUB_ID>
 az role assignment create --assignee <SP_ID> --role "Resource Policy Contributor" --scope /subscriptions/<SUB_ID>
 az role assignment create --assignee <SP_ID> --role "Role Based Access Control Administrator" --scope /subscriptions/<SUB_ID>
+
+# Create Federated Credential (OIDC)
+az ad app federated-credential create --id <APP_OBJECT_ID> --parameters '{
+  "name": "azure-devops-federated-credential",
+  "issuer": "<ISSUER_URL_FROM_ADO>",
+  "subject": "<SUBJECT_IDENTIFIER_FROM_ADO>",
+  "description": "Azure DevOps OIDC Connection",
+  "audiences": ["api://AzureADTokenExchange"]
+}'
 ```
 
 </details>
