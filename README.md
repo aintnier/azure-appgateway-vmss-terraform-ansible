@@ -1,9 +1,9 @@
 # Azure AppGateway & VMSS - Terraform Lab
 
 <!-- prettier-ignore-start -->
-[![Terraform CI ](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status%2Faintnier.azure-appgateway-vmss-terraform-ansible?branchName=main)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build/latest?definitionId=1&branchName=main)
-[![Deploy](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status%2Faintnier.azure-appgateway-vmss-terraform-ansible%20(2)?branchName=main)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build/latest?definitionId=2&branchName=main)
-[![Destroy](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status%2Faintnier.azure-appgateway-vmss-terraform-ansible%20(3)?branchName=main)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build/latest?definitionId=3&branchName=main)
+[![Terraform CI](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status%2Faintnier.azure-appgateway-vmss-terraform-ansible?branchName=main&label=Terraform%20CI)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build/latest?definitionId=1&branchName=main)
+[![Deploy](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status%2Faintnier.azure-appgateway-vmss-terraform-ansible%20(2)?branchName=main&label=Deploy)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build/latest?definitionId=2&branchName=main)
+[![Destroy](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_apis/build/status%2Faintnier.azure-appgateway-vmss-terraform-ansible%20(3)?branchName=main&label=Destroy)](https://dev.azure.com/aintnier/azure-appgateway-vmss-terraform-ansible/_build/latest?definitionId=3&branchName=main)
 <!-- prettier-ignore-end -->
 
 [![Azure](https://img.shields.io/badge/Azure-Cloud-0078D4?logo=microsoft-azure)](https://azure.microsoft.com/)
