@@ -74,7 +74,7 @@ N-tier IaaS architecture on Azure featuring Application Gateway (L7), Standard L
 ## Prerequisites
 
 - **Azure CLI** (`v2.50+`) authenticated with an active subscription
-- **Terraform** (`v1.14.8) installed locally (for formatting/validation)
+- **Terraform** (`v1.14.8`) installed locally (for formatting/validation)
 - **Azure DevOps** account with organization-admin rights (to configure Service Connections)
 
 ---
@@ -414,7 +414,7 @@ The IaC is structured following domain-driven flat-file layout best practices, i
 │   ├── ⚙️ deploy-pipeline.yml                                   # plan -> approval -> apply
 │   └── ⚙️ destroy-pipeline.yml                                  # plan -destroy -> approval -> destroy
 ├── 📁 tests
-│   └── 📄 loadtest.jmx                                          # JMeter test plan (500 req/s, 10 min)
+│   └── 📄 loadtest.jmx                                          # JMeter test plan (~1000 req/s, 10 min)
 ├── ⚙️ .gitignore
 ├── 📄 LICENSE
 └── 📝 README.md
@@ -432,7 +432,7 @@ The IaC is structured following domain-driven flat-file layout best practices, i
 | Cloud          | Microsoft Azure (westeurope)                    |
 | Authentication | OIDC Federated Identity Credential              |
 | Web Server     | Nginx (reverse-proxy + API server)              |
-| Compute        | VMSS Ubuntu 22.04 LTS (Standard_B2s)            |
+| Compute        | VMSS Ubuntu 22.04 LTS (Standard_D2s_v3)         |
 | Load Testing   | Azure Load Testing + JMeter                     |
 | Observability  | Log Analytics, Azure Monitor, Network Watcher   |
 | Governance     | Azure Policy, Consumption Budget, Action Groups |
