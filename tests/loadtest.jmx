@@ -7,6 +7,16 @@
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
     </TestPlan>
     <hashTree>
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="appgw_ip" elementType="Argument">
+            <stringProp name="Argument.name">appgw_ip</stringProp>
+            <stringProp name="Argument.value">${__groovy(System.getenv('appgw_ip'),)}</stringProp>
+            <stringProp name="Argument.desc">App Gateway IP from Azure Load Testing env var</stringProp>
+          </elementProp>
+        </collectionProp>
+      </Arguments>
+      <hashTree/>
       <!-- Thread Group: Main Load -->
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="HTTPS Load" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
@@ -24,7 +34,7 @@
       <hashTree>
         <!-- HTTP Request: Root (/) -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /" enabled="true">
-          <stringProp name="HTTPSampler.domain">${__P(appgw_ip,REPLACE_WITH_APPGW_IP)}</stringProp>
+          <stringProp name="HTTPSampler.domain">${appgw_ip}</stringProp>
           <intProp name="HTTPSampler.port">443</intProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.path">/</stringProp>
@@ -35,23 +45,19 @@
         <hashTree/>
         <!-- HTTP Request: API (/api) -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /api" enabled="true">
-          <stringProp name="HTTPSampler.domain">${__P(appgw_ip,REPLACE_WITH_APPGW_IP)}</stringProp>
+          <stringProp name="HTTPSampler.domain">${appgw_ip}</stringProp>
           <intProp name="HTTPSampler.port">443</intProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.path">/api</stringProp>
+          <stringProp name="HTTPSampler.path">/api/</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <!-- Constant Throughput Timer: 10 req/s per thread = 600 rpm -->
-        <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Throughput Timer" enabled="true">
-          <doubleProp>
-            <name>throughput</name>
-            <value>600.0</value>
-          </doubleProp>
-          <intProp name="calcMode">2</intProp>
-        </ConstantThroughputTimer>
+        <!-- Constant Timer: 1 second delay between requests -->
+        <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Think Time" enabled="true">
+          <stringProp name="ConstantTimer.delay">1</stringProp>
+        </ConstantTimer>
         <hashTree/>
       </hashTree>
     </hashTree>
